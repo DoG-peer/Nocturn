@@ -34,7 +34,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...stateProps,
     ...dispatchProps,
     onTextareaKeyDown: (event) => {
-      if (event.keyCode === Keycode.ENTER && !event.altKey && !event.shiftKey) {
+      if (event.keyCode === Keycode.ENTER && event.ctrlKey) {
         event.preventDefault();
         dispatch(Actions.postTweet(stateProps.text, stateProps.activeAccount, stateProps.inReplyTo));
       }
