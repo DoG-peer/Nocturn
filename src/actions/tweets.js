@@ -44,9 +44,15 @@ export const clearAndSetTweets = (tweets, account, tab) => {
 export const favoriteTweet = (tweet, account, tab) => {
   return dispatch => {
     const client = new TwitterClient(account);
-    client.favoriteStatus(tweet.id_str, (updatedTweet) => {
+    const callback = (updatedTweet) => {
       dispatch(addTweetToTab(updatedTweet, account, tab));
-    });
+    }
+
+    if (tweet.favorited) {
+      client.unfavoriteStatus(tweet.id_str, callback);
+    } else {
+      client.favoriteStatus(tweet.id_str, callback);
+    }
   }
 }
 
@@ -62,6 +68,13 @@ export const postTweet = (text, account, inReplyTo) => {
 
 export const deleteTweetFromTab = (tweet, account, tab) => {
   return { type: REMOVE_TWEET, tweet, account, tab }
+}
+
+export const removeTweet = (tweet, account) => {
+  return dispatch => {
+    dispatch(deleteTweetFromTab(tweet, account, 'home'));
+    dispatch(deleteTweetFromTab(tweet, account, 'mentions'));
+  }
 }
 
 export const deleteTweet = (tweet, account, tab) => {
@@ -91,6 +104,20 @@ export const loadHome = (account) => {
     client.homeTimeline({ count: 50 }, (tweets) => {
       for (let tweet of tweets) {
         dispatch(addTweet(tweet, account));
+      }
+    });
+  }
+}
+
+export const loadMentions = (account, ignore = false) => {
+  return dispatch => {
+    const client = new TwitterClient(account);
+    client.mentionsTimeline({ count: 50 }, (tweets) => {
+      for (let tweet of tweets) {
+        dispatch(addTweet(tweet, account));
+      }
+      if (ignore) {
+        dispatch(markAsRead(tweets[0], account));
       }
     });
   }

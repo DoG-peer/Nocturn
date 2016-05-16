@@ -1,4 +1,19 @@
 # Change Log
+## v1.2.1
+- Show application icon on Linux too
+- Remove tweet from timeline with deleted event
+
+## v1.2.0
+- Show application icon on Windows and OSX [#20](https://github.com/k0kubun/Nocturn/pull/20)
+  - Thanks to @CandyFace
+- Use Electron 1.0
+- Support unfavorite by favoriting twice
+- Load mentions on reloading
+
+## v1.1.2
+- Show a thumbnail of photos in tweet [#19](https://github.com/k0kubun/Nocturn/pull/19)
+  - Thanks to @CandyFace
+
 ## v1.1.1
 - Reconnect streaming by <kbd>Cmd-R</kbd> / <kbd>Ctrl-R</kbd>
 - Fix list box size in OSX

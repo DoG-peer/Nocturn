@@ -38,6 +38,22 @@ export default class Tweet extends React.Component {
     };
   }
 
+  tweetMedia() {
+    if (!this.props.tweet.entities.media) return [];
+
+    return this.props.tweet.entities.media.map((media) => {
+      if (media.type === 'photo') {
+        return (
+          <a href={media.expanded_url} key={media.id_str} target='_blank'>
+            <img className='tweet_media' src={media.media_url} />
+          </a>
+        );
+      } else {
+        return '';
+      }
+    });
+  }
+
   reactionButtonFor(tweet) {
     if (tweet.user.id_str === this.props.account.id_str) {
       return <DeleteContainer tweet={this.props.tweet} account={this.props.account} tab={this.props.tab} />;
@@ -54,8 +70,9 @@ export default class Tweet extends React.Component {
             <img className='user_icon' src={this.largeProfileImage(this.props.tweet.user)} />
           </div>
           <div className='right_box'>
-            <TweetHeader tweet={this.props.tweet} now={this.props.now} />
+            <TweetHeader tweet={this.props.tweet} now={this.props.now}/>
             <div className='tweet_body' dangerouslySetInnerHTML={this.autolinkedText(this.props.tweet)} />
+            {this.tweetMedia()}
           </div>
           <div className='right_widget'>
             {this.reactionButtonFor(this.props.tweet)}
